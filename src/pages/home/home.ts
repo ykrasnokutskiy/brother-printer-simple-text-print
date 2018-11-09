@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import lodash from 'lodash';
 
 declare var cordova: any;
+
 
 @Component({
   selector: 'page-home',
@@ -10,51 +12,65 @@ declare var cordova: any;
 })
 export class HomePage {
 
+  public platform: Platform;
+
   constructor(
-    public navCtrl: NavController
-  ) {}
+    public navCtrl: NavController,
+    platform: Platform
+  ) {
+    this.platform = platform;
+  }
 
   printer() {
-    console.log(`Printer class:`);
-    console.log(cordova.plugins.brotherPrinter);
 
-    cordova.plugins.brotherPrinter.findBluetoothPrinters((printers)=>{
-      if (printers.length > 0) {
-        console.log('found bluetooth printers:');
-        console.log(printers);
+    if (this.platform.is('core')) {
+      console.log(`WINDOWS`);
+    }
 
-        let brother = lodash.find(printers, {model: 'QL_820NWB'});
-        if (brother) {
-          console.log('found brother printer');
+    if (this.platform.is('android')) {
+      console.log(`Printer class:`);
+      console.log(cordova.plugins);
 
-          // set printer
+      cordova.plugins.brotherPrinter.findBluetoothPrinters((printers) => {
+        if (printers.length > 0) {
+          console.log(`found bluetooth printers:`);
+          console.log(printers);
 
-          cordova.plugins.brotherPrinter.setPrinter(brother, () => {
-            console.log('connected to brother printer');
+          let brother = lodash.find(printers, {model: 'QL_820NWB'});
+          if (brother) {
+            console.log('found brother printer');
 
-            // ToDo: Here should be code to send text to printer
-            // ToDo: Also, how to check any printer status? If it's switched on, has paper roll, etc.
+            // set printer
 
+            cordova.plugins.brotherPrinter.setPrinter(brother,
+              connectedPrinter => {
+                console.log(`connected to brother printer`);
+                console.log(connectedPrinter);
 
+                cordova.plugins.brotherPrinter.printerStatus(status => {
+                  console.log(`printer status:`);
+                  console.log(status);
 
-
-          }, (error) => {
-            console.log('error');
-            console.log(error);
-          } );
-
+                })
+              },
+              error => {
+                console.log(`error`);
+                console.log(error);
+              }
+            )
+          } else {
+            // no correct printer found
+            console.log(`can't find correct printer`);
+          }
         } else {
-          // no correct printer found
-          console.log(`can't find correct printer`);
+          // no printer found
+          console.log(`no printers were found`);
         }
-      } else {
-        // no printer found
-        console.log(`no printers were found`);
-      }
-    },(err)=>{
-      console.log("Error");
-      console.log(err)
-    });
+      }, (err) => {
+        console.log(`Error`);
+        console.log(err)
+      });
+    }
 
   }
 

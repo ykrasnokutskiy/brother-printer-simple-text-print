@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.starter" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>brother</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
@@ -82,6 +82,7 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^2.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <plugin name="cordova-brother-label-printer" spec="git+https://github.com/ykrasnokutskiy/cordova-brother-label-printer.git" />
-    <engine name="android" spec="6.4.0" />
+    <plugin name="com.threescreens.cordova.plugin.brotherPrinter" spec="git+https://github.com/gordol/cordova-brother-label-printer.git#brother-sdk-upgrade" />
+    <engine name="android" spec="^7.1.2" />
+    <engine name="windows" spec="6.0.1" />
 </widget>
