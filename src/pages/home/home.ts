@@ -38,20 +38,21 @@ export class HomePage {
 
           let brother = lodash.find(printers, {model: 'QL_820NWB'});
           if (brother) {
-            console.log('found brother printer');
+            console.log('found brother printer:');
+            console.log(brother);
 
             // set printer
-
             cordova.plugins.brotherPrinter.setPrinter(brother,
               connectedPrinter => {
-                console.log(`connected to brother printer`);
+                console.log(`connected to brother printer:`);
                 console.log(connectedPrinter);
 
+                // get printer's status
                 cordova.plugins.brotherPrinter.printerStatus(status => {
                   console.log(`printer status:`);
                   console.log(status);
-
                 })
+
               },
               error => {
                 console.log(`error`);
